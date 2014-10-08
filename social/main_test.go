@@ -1,4 +1,4 @@
-package main
+package social
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 
 func TestSocialPostJSONMarshalling(t *testing.T) {
 	u, _ := url.Parse("http://www.google.com")
-	p := SocialPost{Text: "test", Url: *u}
+	p := Post{Text: "test", Url: *u}
 
 	j, err := p.MarshalJSON()
 	if err != nil {

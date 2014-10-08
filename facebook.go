@@ -2,11 +2,12 @@ package main
 
 import (
 	fb "github.com/huandu/facebook"
+	"github.com/ideum/social-feed/social"
 	"net/url"
 	"time"
 )
 
-func GetFacebookPosts() ([]SocialPost, error) {
+func GetFacebookPosts() ([]social.Post, error) {
 	app := fb.New(cfg.Facebook.AppId, cfg.Facebook.AppSecret)
 	token := app.AppAccessToken()
 	session := app.Session(token)
@@ -26,7 +27,7 @@ func GetFacebookPosts() ([]SocialPost, error) {
 		return nil, err
 	}
 
-	posts := make([]SocialPost, 0, len(data))
+	posts := make([]social.Post, 0, len(data))
 
 	// all facebook pages should link back to the master timeline
 	u, _ := url.Parse("http://facebook.com/ideum")
@@ -40,8 +41,8 @@ func GetFacebookPosts() ([]SocialPost, error) {
 		t, _ := time.Parse("2006-01-02T15:04:05-0700", d.CreatedTime)
 		i, _ := url.Parse(d.Picture)
 
-		posts = append(posts, SocialPost{
-			Source:    FacebookSource,
+		posts = append(posts, social.Post{
+			Source:    social.Facebook,
 			CreatedAt: t,
 			Text:      d.Message,
 			Url:       *u,

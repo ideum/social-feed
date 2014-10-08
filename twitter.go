@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/ChimeraCoder/anaconda"
+	"github.com/ideum/social-feed/social"
 	"net/url"
 )
 
@@ -14,21 +15,21 @@ func init() {
 	twitterApi = anaconda.NewTwitterApi(cfg.Twitter.AccessToken, cfg.Twitter.AccessTokenSecret)
 }
 
-func GetTwitterPosts() ([]SocialPost, error) {
+func GetTwitterPosts() ([]social.Post, error) {
 	tweets, err := twitterApi.GetUserTimeline(nil)
 
 	if err != nil {
 		return nil, err
 	}
 
-	res := make([]SocialPost, 0, len(tweets))
+	res := make([]social.Post, 0, len(tweets))
 
 	for _, tweet := range tweets {
 		t, _ := tweet.CreatedAtTime()
 		u, _ := url.Parse("https://twitter.com/ideum/status/" + tweet.IdStr)
 
-		res = append(res, SocialPost{
-			Source:    TwitterSource,
+		res = append(res, social.Post{
+			Source:    social.Twitter,
 			CreatedAt: t,
 			Text:      tweet.Text,
 			Url:       *u,

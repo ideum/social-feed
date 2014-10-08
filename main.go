@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/ideum/social-feed/social"
 	"log"
 	"net/http"
 	"os"
@@ -43,7 +44,7 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Loading \"/\"")
 
-		var posts SocialPostSlice
+		var posts social.PostSlice
 
 		fb, _ := GetFacebookPosts()
 		posts = append(posts, fb...)
