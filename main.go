@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sort"
 )
 
 var cfg struct {
@@ -16,6 +17,9 @@ var cfg struct {
 		ConsumerSecret    string
 		AccessToken       string
 		AccessTokenSecret string
+	}
+	Facebook struct {
+		AppId, AppSecret string
 	}
 }
 
@@ -39,8 +43,17 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Loading \"/\"")
 
+		var posts SocialPostSlice
+
+		fb, _ := GetFacebookPosts()
+		posts = append(posts, fb...)
+
 		tweets, _ := GetTwitterPosts()
-		json.NewEncoder(w).Encode(tweets)
+		posts = append(posts, tweets...)
+
+		sort.Sort(sort.Reverse(posts))
+
+		json.NewEncoder(w).Encode(posts)
 	})
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", cfg.Port), nil))

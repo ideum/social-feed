@@ -9,7 +9,8 @@ import (
 type SocialSource string
 
 const (
-	TwitterSource SocialSource = "twitter"
+	TwitterSource  SocialSource = "twitter"
+	FacebookSource SocialSource = "facebook"
 )
 
 type SocialPost struct {
@@ -19,6 +20,8 @@ type SocialPost struct {
 	Url       url.URL
 	Image     url.URL
 }
+
+type SocialPostSlice []SocialPost
 
 func (p *SocialPost) MarshalJSON() ([]byte, error) {
 	tmp := struct {
@@ -37,3 +40,7 @@ func (p *SocialPost) MarshalJSON() ([]byte, error) {
 
 	return json.Marshal(tmp)
 }
+
+func (s SocialPostSlice) Len() int           { return len(s) }
+func (s SocialPostSlice) Less(i, j int) bool { return s[i].CreatedAt.Before(s[j].CreatedAt) }
+func (s SocialPostSlice) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
