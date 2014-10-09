@@ -21,6 +21,10 @@ type Post struct {
 	Image     url.URL
 }
 
+type Provider interface {
+	GetPosts() ([]Post, error)
+}
+
 func (p *Post) MarshalJSON() ([]byte, error) {
 	tmp := struct {
 		Source    Source    `json:"source"`

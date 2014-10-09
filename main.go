@@ -40,15 +40,7 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Loading \"/\"")
 
-		var posts social.PostSlice
-
-		fApi := facebook.New(&cfg.Facebook)
-		fb, _ := fApi.GetPosts()
-		posts = append(posts, fb...)
-
-		tApi := twitter.New(&cfg.Twitter)
-		tweets, _ := tApi.GetPosts()
-		posts = append(posts, tweets...)
+		var posts social.PostSlice = getAllPosts()
 
 		sort.Sort(sort.Reverse(posts))
 
