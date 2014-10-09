@@ -4,24 +4,20 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/ideum/social-feed/social"
 	"log"
 	"net/http"
 	"os"
 	"sort"
+
+	"github.com/ideum/social-feed/social"
+	"github.com/ideum/social-feed/social/facebook"
+	"github.com/ideum/social-feed/social/twitter"
 )
 
 var cfg struct {
-	Port    int `json:"-"`
-	Twitter struct {
-		ConsumerKey       string
-		ConsumerSecret    string
-		AccessToken       string
-		AccessTokenSecret string
-	}
-	Facebook struct {
-		AppId, AppSecret string
-	}
+	Port     int `json:"-"`
+	Twitter  twitter.Credentials
+	Facebook facebook.Credentials
 }
 
 func init() {
@@ -46,10 +42,12 @@ func main() {
 
 		var posts social.PostSlice
 
-		fb, _ := GetFacebookPosts()
+		fApi := facebook.New(&cfg.Facebook)
+		fb, _ := fApi.GetPosts()
 		posts = append(posts, fb...)
 
-		tweets, _ := GetTwitterPosts()
+		tApi := twitter.New(&cfg.Twitter)
+		tweets, _ := tApi.GetPosts()
 		posts = append(posts, tweets...)
 
 		sort.Sort(sort.Reverse(posts))

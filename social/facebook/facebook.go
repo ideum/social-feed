@@ -1,4 +1,4 @@
-package main
+package facebook
 
 import (
 	fb "github.com/huandu/facebook"
@@ -7,12 +7,22 @@ import (
 	"time"
 )
 
-func GetFacebookPosts() ([]social.Post, error) {
-	app := fb.New(cfg.Facebook.AppId, cfg.Facebook.AppSecret)
+type Api struct{ *fb.Session }
+
+type Credentials struct {
+	AppId, AppSecret string
+}
+
+func New(c *Credentials) *Api {
+	app := fb.New(c.AppId, c.AppSecret)
 	token := app.AppAccessToken()
 	session := app.Session(token)
 
-	res, _ := session.Get("/242598822781/feed", fb.Params{})
+	return &Api{session}
+}
+
+func (api *Api) GetPosts() ([]social.Post, error) {
+	res, _ := api.Get("/242598822781/feed", fb.Params{})
 
 	var data []struct {
 		Id          string

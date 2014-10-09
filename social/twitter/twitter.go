@@ -1,4 +1,4 @@
-package main
+package twitter
 
 import (
 	"github.com/ChimeraCoder/anaconda"
@@ -6,17 +6,24 @@ import (
 	"net/url"
 )
 
-var twitterApi *anaconda.TwitterApi
+type Api struct{ *anaconda.TwitterApi }
 
-func init() {
-	anaconda.SetConsumerKey(cfg.Twitter.ConsumerKey)
-	anaconda.SetConsumerSecret(cfg.Twitter.ConsumerSecret)
-
-	twitterApi = anaconda.NewTwitterApi(cfg.Twitter.AccessToken, cfg.Twitter.AccessTokenSecret)
+type Credentials struct {
+	ConsumerKey, ConsumerSecret    string
+	AccessToken, AccessTokenSecret string
 }
 
-func GetTwitterPosts() ([]social.Post, error) {
-	tweets, err := twitterApi.GetUserTimeline(nil)
+func New(c *Credentials) *Api {
+	anaconda.SetConsumerKey(c.ConsumerKey)
+	anaconda.SetConsumerSecret(c.ConsumerSecret)
+
+	api := anaconda.NewTwitterApi(c.AccessToken, c.AccessTokenSecret)
+
+	return &Api{api}
+}
+
+func (api *Api) GetPosts() ([]social.Post, error) {
+	tweets, err := api.GetUserTimeline(nil)
 
 	if err != nil {
 		return nil, err
