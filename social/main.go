@@ -11,6 +11,7 @@ type Source string
 const (
 	Twitter  Source = "twitter"
 	Facebook Source = "facebook"
+	Flickr   Source = "flickr"
 )
 
 type Post struct {

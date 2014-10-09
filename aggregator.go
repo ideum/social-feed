@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/ideum/social-feed/social"
 	"github.com/ideum/social-feed/social/facebook"
+	"github.com/ideum/social-feed/social/flickr"
 	"github.com/ideum/social-feed/social/twitter"
 )
 
@@ -11,8 +12,9 @@ func getAllPosts() []social.Post {
 	pc := make(chan []social.Post)
 
 	providers := [...]social.Provider{
-		facebook.New(&cfg.Facebook),
 		twitter.New(&cfg.Twitter),
+		facebook.New(&cfg.Facebook),
+		flickr.New(&cfg.Flickr),
 	}
 
 	for _, p := range providers {

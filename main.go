@@ -10,6 +10,7 @@ import (
 
 	"github.com/ideum/social-feed/social"
 	"github.com/ideum/social-feed/social/facebook"
+	"github.com/ideum/social-feed/social/flickr"
 	"github.com/ideum/social-feed/social/twitter"
 )
 
@@ -17,6 +18,7 @@ var cfg struct {
 	Port     int
 	Twitter  twitter.Credentials
 	Facebook facebook.Credentials
+	Flickr   flickr.Credentials
 }
 
 func init() {
