@@ -12,6 +12,7 @@ import (
 	"github.com/ideum/social-feed/social/facebook"
 	"github.com/ideum/social-feed/social/flickr"
 	"github.com/ideum/social-feed/social/twitter"
+	"github.com/ideum/social-feed/social/youtube"
 )
 
 var cfg struct {
@@ -19,6 +20,7 @@ var cfg struct {
 	Twitter  twitter.Credentials
 	Facebook facebook.Credentials
 	Flickr   flickr.Credentials
+	YouTube  youtube.Credentials
 }
 
 func init() {

@@ -12,6 +12,7 @@ const (
 	Twitter  Source = "twitter"
 	Facebook Source = "facebook"
 	Flickr   Source = "flickr"
+	YouTube  Source = "youtube"
 )
 
 type Post struct {
