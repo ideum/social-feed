@@ -1,6 +1,8 @@
 package main
 
 import (
+	"sync"
+
 	"github.com/ideum/social-feed/social"
 	"github.com/ideum/social-feed/social/facebook"
 	"github.com/ideum/social-feed/social/flickr"
@@ -9,25 +11,33 @@ import (
 )
 
 func getAllPosts() []social.Post {
+	var wg sync.WaitGroup
 	posts := []social.Post{}
-	pc := make(chan []social.Post)
+	pc := make(chan social.Post)
 
-	providers := [...]social.Provider{
-		twitter.New(&cfg.Twitter),
-		facebook.New(&cfg.Facebook),
-		flickr.New(&cfg.Flickr),
-		youtube.New(&cfg.YouTube),
+	providers := map[social.Source]social.Provider{
+		social.Twitter:  twitter.New(&cfg.Twitter),
+		social.Facebook: facebook.New(&cfg.Facebook),
+		social.Flickr:   flickr.New(&cfg.Flickr),
+		social.YouTube:  youtube.New(&cfg.YouTube),
 	}
 
-	for _, p := range providers {
-		go func(p social.Provider) {
-			pposts, _ := p.GetPosts()
-			pc <- pposts
-		}(p)
+	wg.Add(len(providers))
+
+	for s, p := range providers {
+		go func(s social.Source, p social.Provider) {
+			getPosts(p, s, pc)
+			wg.Done()
+		}(s, p)
 	}
 
-	for _ = range providers {
-		posts = append(posts, <-pc...)
+	go func() {
+		wg.Wait()
+		close(pc)
+	}()
+
+	for post := range pc {
+		posts = append(posts, post)
 	}
 
 	return posts
