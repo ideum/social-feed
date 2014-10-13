@@ -27,14 +27,16 @@ type Provider interface {
 	GetPosts() ([]Post, error)
 }
 
+type tmpPost struct {
+	Source    Source    `json:"source"`
+	CreatedAt time.Time `json:"created_at"`
+	Text      string    `json:"text"`
+	URL       string    `json:"url"`
+	Image     string    `json:"image"`
+}
+
 func (p *Post) MarshalJSON() ([]byte, error) {
-	tmp := struct {
-		Source    Source    `json:"source"`
-		CreatedAt time.Time `json:"created_at"`
-		Text      string    `json:"text"`
-		URL       string    `json:"url"`
-		Image     string    `json:"image"`
-	}{
+	tmp := tmpPost{
 		p.Source,
 		p.CreatedAt,
 		p.Text,
@@ -43,6 +45,33 @@ func (p *Post) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(tmp)
+}
+
+func (p *Post) UnmarshalJSON(j []byte) error {
+	var tmp tmpPost
+
+	err := json.Unmarshal(j, &tmp)
+	if err != nil {
+		return err
+	}
+
+	url, err := url.Parse(tmp.URL)
+	if err != nil {
+		return err
+	}
+
+	img, err := url.Parse(tmp.Image)
+	if err != nil {
+		return err
+	}
+
+	p.Source = tmp.Source
+	p.CreatedAt = tmp.CreatedAt
+	p.Text = tmp.Text
+	p.Url = *url
+	p.Image = *img
+
+	return nil
 }
 
 // SocialPostSlice exists to satisfy sort.Interface.  Posts are sorted
