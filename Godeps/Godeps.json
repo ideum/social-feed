@@ -1,0 +1,46 @@
+{
+	"ImportPath": "github.com/ideum/social-feed",
+	"GoVersion": "go1.2.1",
+	"Deps": [
+		{
+			"ImportPath": "code.google.com/p/goauth2/oauth",
+			"Comment": "weekly-56",
+			"Rev": "afe77d958c701557ec5dc56f6936fcc194d15520"
+		},
+		{
+			"ImportPath": "code.google.com/p/google-api-go-client/googleapi",
+			"Comment": "release-103",
+			"Rev": "11626ef0c2fd66fd8c9a128f6ae38b77cd101f30"
+		},
+		{
+			"ImportPath": "code.google.com/p/google-api-go-client/youtube/v3",
+			"Comment": "release-103",
+			"Rev": "11626ef0c2fd66fd8c9a128f6ae38b77cd101f30"
+		},
+		{
+			"ImportPath": "github.com/ChimeraCoder/anaconda",
+			"Rev": "fee61094295920a63bb16db22fe7f5bc43a33380"
+		},
+		{
+			"ImportPath": "github.com/ChimeraCoder/tokenbucket",
+			"Rev": "c5a927568de7aad8a58127d80bcd36ca4e71e454"
+		},
+		{
+			"ImportPath": "github.com/bradfitz/gomemcache/memcache",
+			"Comment": "release.r60-37-gac40937",
+			"Rev": "ac409371199b8d17d0d6614ec959585e41ace7a3"
+		},
+		{
+			"ImportPath": "github.com/garyburd/go-oauth/oauth",
+			"Rev": "3b723ab4b7bd12769c5a3b3de84dbf03e51e4fbb"
+		},
+		{
+			"ImportPath": "github.com/huandu/facebook",
+			"Rev": "b5a3d636d02b32fb86abfaae7b95ed563cff442d"
+		},
+		{
+			"ImportPath": "github.com/mncaudill/go-flickr",
+			"Rev": "92d049cd3dd88beb13d0322c1d8e68b94cbd439a"
+		}
+	]
+}
